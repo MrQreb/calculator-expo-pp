@@ -1,3 +1,5 @@
+import { showToast } from '@/helpers/showToast';
+import { Href, router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Text, useColorScheme, TouchableOpacity } from 'react-native';
 
@@ -16,28 +18,38 @@ export default function LoginScreen() {
     setloginData({ ...loginData, password });
   };
 
+  const pushToCalulator = (route: Href) => {
+
+    setTimeout(() => {  
+        router.push(route);
+      }, 900);
+  }
+
   const checkCredentials = (loginData: { email: string; password: string }) => {
 
     const emailAdmin = 'admin';
     const passwordAdmin = 'admin';
-
+  
     const emailAccountant = 'contador';
     const passwordAccountant = 'contador';
-
+  
     const adminCredentials = loginData.email === emailAdmin && passwordAdmin === loginData.password;
     const accountantCredentials = loginData.email === emailAccountant && passwordAccountant === loginData.password;
-
-
-    //TODO: Guadar el nombre del rol para tipo de informacion
-    if(adminCredentials){
-        console.log('es admin')
+      
+    if (adminCredentials) {
+      
+      showToast('success', 'Inicio de sesión correcto ✅', 'Bienvenido administrador');
+      pushToCalulator('/history');
+      return;
     }
-
-    if(accountantCredentials){
-        console.log('es contador')
+  
+    if (accountantCredentials) {
+      showToast('success', 'Inicio de sesión correcto ✅', 'Bienvenido contador');
+      pushToCalulator('/calulator');
+      return;
     }
-    
-
+  
+    showToast('error', 'Credenciales Erróneas ❌', 'Verifique sus credenciales');
   };
 
   return (
